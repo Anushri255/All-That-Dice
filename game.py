@@ -75,7 +75,6 @@ class MainMenu:
         elif userCommandChoice == "q":
             quit()
     
-    
 class Games:
     def __init__(self):
         self.strength =0
@@ -174,3 +173,109 @@ class Bunco(Mulitplayers):
             print("Round", roundNumber)
             round.playRound(self.playersInGame,roundNumber,self.playerPoints,self.playerWins)
             roundNumber +=1
+
+
+
+
+
+
+
+class Player:
+    playersList = [[]]
+    totalPlayers = 0 
+
+    def __init__(self):
+        self.chips = 100
+
+    def addPlayer(self, userName):
+        
+        # Check if name is already taken
+        if userName not in Player.playersList:
+
+        # Add player to the list
+            Player.playersList.append(userName)
+            Player.playersList.append(self.chips)
+            Player.totalPlayers += 1
+            print("Welcome", userName)
+            
+
+        else:
+            print("Sorry, the name is already taken.")
+
+        m = MainMenu()
+        m.menu()
+        
+        
+    def getPlayersList(self):
+        return Player.playersList
+
+    def setPlayersList(self):
+        pass
+
+    
+class Round:
+    pass
+
+    def playRound(self,playersInGame,roundNumber, playerPoints, playerWins):
+
+        continueTurn = True
+
+        for key in playersInGame:
+            
+            roundPoints = 0  
+        
+            while continueTurn != False:
+
+                points = 0 
+                print("Working",key)
+                print("It's", key,"'s turn." )
+                
+                d1 = Dice()
+                d2 = Dice()
+                d3 = Dice()
+
+                d1Value = d1.rollDice()
+                d2Value = d2.rollDice()
+                d3Value = d3.rollDice()
+
+                d1NewVal = d1.diceStrength(d1Value)
+                Dice.bunco = True
+                d2NewVal = d2.diceStrength(d2Value)
+                d3NewVal = d3.diceStrength(d3Value)
+                Dice.bunco = False
+
+                print(d1NewVal)
+                print(d2NewVal)
+                print(d3NewVal)
+                
+                if d1Value == d2NewVal == d3NewVal:
+                    if d1Value == roundNumber:
+                        points+=21
+                        continueTurn = False
+                    
+                    else:
+                        points+=5
+                        
+                else:
+
+                    if d1NewVal == roundNumber:
+                        points +=1                    
+
+                    if d2NewVal == roundNumber:
+                        points+=1
+                    
+                    if d3NewVal == roundNumber:
+                        points+=1
+                    
+                    else:
+                        continueTurn = False
+
+                roundPoints+=points
+                print(points)
+                print(roundPoints)
+            
+            playerPoints[key] = roundPoints
+            continueTurn = True
+            print(playerPoints)
+
+    
