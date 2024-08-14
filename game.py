@@ -1,3 +1,8 @@
+import random
+from select import select
+from tkinter import Menu
+from turtle import begin_fill, pos
+
 class AllThatDice:
     def __init__(self):
         pass
@@ -75,6 +80,7 @@ class MainMenu:
         elif userCommandChoice == "q":
             quit()
     
+
 class Games:
     def __init__(self):
         self.strength =0
@@ -174,12 +180,105 @@ class Bunco(Mulitplayers):
             round.playRound(self.playersInGame,roundNumber,self.playerPoints,self.playerWins)
             roundNumber +=1
 
+class OddOrEven(Games):
+    def __init__(self):
+        self.userGuess = 0
+        super().__init__()
+
+    def beginGame(self):
+
+        invalid = True
+        dice = Dice()
+
+        print("Hey",self.playerName,"Odd (O) or Even (E) ?")
+        self.userGuess = input("> ")
+        
+        self.userGuess = self.userGuess.upper()
+
+        self.originalDiceValue = dice.rollDice()
+
+        print(self.originalDiceValue)
+        
+        self.newDiceValue = dice.diceStrength(self.originalDiceValue)
+
+        print("new dice value", self.newDiceValue)
+
+        # TESTING PURPOSES ONLY
+        print("New value",self.newDiceValue)
+
+        # Fix up spacing issues
+        if self.newDiceValue % 2 == 0 and self.userGuess == "E":
+            print("Congratulations,",self.playerName,"! you win")
+        
+        elif self.newDiceValue % 2 != 0 and self.userGuess == "O":
+            print("Congratulations,",self.playerName,"! you win")
+        
+        else:
+            print("Sorry,",self.playerName,"you lose!")
+                
+            
+    def setUpPlayers(self):
+        print("Odd or Even")
+        print("What is your player name?")
+        self.playerName = input(">")
+        print(self.playerName)
+
+        if self.playerName in Player.playersList:
+            print("You can play ")
+            self.beginGame()
+        
+        else:
+            print("No player found")
+
+    
+class Maxi(Mulitplayers):
+    def __init__(self):
+        super().__init__()
 
 
+    def beginGame(self):
+        pass
+
+    
+class Dice:
+
+    bunco = False
+
+    def __init__(self):
+        self.originalDiceValue = 0 
+        self.strength = 0
+        self.invalid = True 
+
+    def rollDice(self):
+        self.originalDiceValue = random.randint(1,6)
+        return self.originalDiceValue
+
+    def diceStrength(self,diceValue):
+
+        if Dice.bunco == False:
+            print("How strong will you throw (0-5) ?")
+            self.strength = int(input("> "))
+            
+        while self.invalid == True:
+
+            if self.strength > 5 or self.strength <0:
+                print("Invalid Choice")
+                print("How strong will you throw (0-5) ?")
+                self.strength = int(input("> "))
+
+            else:
+
+                self.newDiceValue = self.originalDiceValue + self.strength
+            
+                if self.newDiceValue > 6:
+                    self.newDiceValue = self.newDiceValue - 6 
+                
+                self.invalid = False
+
+        return self.newDiceValue
 
 
-
-
+    
 class Player:
     playersList = [[]]
     totalPlayers = 0 
@@ -202,6 +301,9 @@ class Player:
         else:
             print("Sorry, the name is already taken.")
 
+        # For testing purposes only
+        print(Player.playersList)
+        print(Player.totalPlayers)
         m = MainMenu()
         m.menu()
         
@@ -278,4 +380,5 @@ class Round:
             continueTurn = True
             print(playerPoints)
 
-    
+atd = AllThatDice()
+atd.run()
