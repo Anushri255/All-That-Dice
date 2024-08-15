@@ -12,9 +12,4 @@
 
 ## Installation
 
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/Anushri255/all-that-dice.git
-   ```
-
-2. Navigate to `game.py` and select it to play
+Download `All-That-Dice.exe` and run it!
